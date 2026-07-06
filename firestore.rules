@@ -1,0 +1,216 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && getRole() == 'admin';
+    }
+    
+    function isTeacher() {
+      return isAuthenticated() && getRole() == 'teacher';
+    }
+    
+    function isParent() {
+      return isAuthenticated() && getRole() == 'parent';
+    }
+    
+    function isStudent() {
+      return isAuthenticated() && getRole() == 'student';
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isAssignedTeacher(batchId) {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/batches/$(batchId)) &&
+        get(/databases/$(database)/documents/batches/$(batchId)).data.teacherId == request.auth.uid;
+    }
+    
+    function hasLinkedStudent(studentId) {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/parents/$(request.auth.uid)).data.studentIds.hasAny([studentId]);
+    }
+
+    // Users collection: admin manages all, users read own profile
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (isAdmin() || isOwner(userId) || (isTeacher() && userId in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.studentIds));
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && (isAdmin() || isOwner(userId));
+      allow delete: if isAdmin();
+    }
+
+    // Students collection
+    match /students/{studentId} {
+      allow read: if isAuthenticated() && (isAdmin() || isTeacher() || isParent() || isOwner(studentId));
+      allow create: if isAdmin() || isTeacher();
+      allow update: if isAdmin() || isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    // Teachers collection
+    match /teachers/{teacherId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin();
+      allow update: if isAdmin() || isOwner(teacherId);
+      allow delete: if isAdmin();
+    }
+
+    // Parents collection
+    match /parents/{parentId} {
+      allow read: if isAuthenticated() && (isAdmin() || isOwner(parentId) || isTeacher());
+      allow create: if isAdmin();
+      allow update: if isAdmin() || isOwner(parentId);
+      allow delete: if isAdmin();
+    }
+
+    // Batches collection
+    match /batches/{batchId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() || isTeacher();
+      allow update: if isAdmin() || isAssignedTeacher(batchId);
+      allow delete: if isAdmin();
+    }
+
+    // Subjects collection
+    match /subjects/{subjectId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() || isTeacher();
+      allow update: if isAdmin() || isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    // Attendance collection
+    match /attendance/{attendanceId} {
+      allow read: if isAuthenticated() && (isAdmin() || isTeacher() || isStudent() || isParent());
+      allow create: if isAdmin() || isTeacher();
+      allow update: if isAdmin() || isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    // Fees collection
+    match /fees/{feeId} {
+      allow read: if isAuthenticated() && (isAdmin() || isTeacher() || isStudent() || isParent());
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Homework collection
+    match /homework/{homeworkId} {
+      allow read: if isAuthenticated() && (isAdmin() || isTeacher() || isStudent() || isParent());
+      allow create: if isAdmin() || isTeacher();
+      allow update: if isAdmin() || isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    // Exams collection
+    match /exams/{examId} {
+      allow read: if isAuthenticated() && (isAdmin() || isTeacher() || isStudent() || isParent());
+      allow create: if isAdmin() || isTeacher();
+      allow update: if isAdmin() || isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    // Timetable collection
+    match /timetable/{slotId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() || isTeacher();
+      allow update: if isAdmin() || isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    // Calendar events collection
+    match /calendar_events/{eventId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAdmin() || isOwner(get(/databases/$(database)/documents/calendar_events/$(eventId)).data.createdBy);
+      allow delete: if isAdmin() || isOwner(get(/databases/$(database)/documents/calendar_events/$(eventId)).data.createdBy);
+    }
+
+    // Notifications collection
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && (isAdmin() || request.auth.uid in resource.data.recipientIds);
+      allow create: if isAdmin();
+      allow update: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    // Activity logs collection
+    match /activity_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAuthenticated();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // WhatsApp reminders collection
+    match /whatsapp_reminders/{reminderId} {
+      allow read: if isAuthenticated() && (isAdmin() || isTeacher());
+      allow create: if isAdmin() || isTeacher();
+      allow update: if isAdmin() || isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    // Chat messages collection
+    match /chat_messages/{messageId} {
+      allow read: if isAuthenticated() && (isAdmin() || request.auth.uid in resource.data.participantIds);
+      allow create: if isAuthenticated();
+      allow update: if isAdmin() || isOwner(resource.data.senderId);
+      allow delete: if isAdmin();
+    }
+
+    // AI conversations
+    match /ai_conversations/{convId} {
+      allow read: if isAuthenticated() && (isAdmin() || isOwner(resource.data.userId));
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && isOwner(resource.data.userId);
+      allow delete: if isAdmin() || isOwner(resource.data.userId);
+    }
+
+    // AI messages
+    match /ai_messages/{msgId} {
+      allow read: if isAuthenticated() && (isAdmin() || request.auth.uid in resource.data.participantIds);
+      allow create: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    // AI reports
+    match /ai_reports/{reportId} {
+      allow read: if isAuthenticated() && isAdmin();
+      allow create: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    // Reports collection
+    match /reports/{reportId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Export logs collection
+    match /export_logs/{logId} {
+      allow read: if isAuthenticated() && (isAdmin() || isOwner(resource.data.userId));
+      allow create: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    // Analytics snapshots
+    match /analytics_snapshots/{snapshotId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

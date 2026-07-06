@@ -1,0 +1,140 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:taleem/core/errors/error_handler.dart';
+import 'package:taleem/core/utils/helpers.dart';
+import 'package:taleem/data/models/parent_model.dart';
+import 'package:taleem/data/repositories/parent_repository.dart';
+
+class ParentController extends GetxController {
+  final ParentRepository _parentRepository = Get.find<ParentRepository>();
+
+  final RxList<ParentModel> items = <ParentModel>[].obs;
+  final RxBool isLoading = false.obs;
+  final RxBool isMoreLoading = false.obs;
+  final RxBool hasMore = true.obs;
+  final RxString error = ''.obs;
+
+  final RxString searchQuery = ''.obs;
+  final RxString sortByField = 'name'.obs;
+  final RxBool sortDescending = false.obs;
+
+  DocumentSnapshot? _lastDoc;
+  static const int _limit = 20;
+
+  @override
+  void onInit() {
+    super.onInit();
+    debounce(searchQuery, (_) => loadItems(refresh: true), time: const Duration(milliseconds: 500));
+    loadItems();
+  }
+
+  Future<void> loadItems({bool refresh = false}) async {
+    if (isLoading.value) return;
+    isLoading.value = true;
+    error.value = '';
+
+    if (refresh) {
+      _lastDoc = null;
+      hasMore.value = true;
+      items.clear();
+    }
+
+    try {
+      final snap = await _parentRepository.queryParents(
+        searchQuery: searchQuery.value,
+        sortByField: sortByField.value,
+        descending: sortDescending.value,
+        startAfterDoc: _lastDoc,
+        limit: _limit,
+      );
+
+      if (snap.docs.isNotEmpty) {
+        _lastDoc = snap.docs.last;
+        final list = snap.docs.map((doc) => ParentModel.fromJson(doc.data())).toList();
+        items.addAll(list);
+        hasMore.value = list.length == _limit;
+      } else {
+        hasMore.value = false;
+      }
+    } catch (e) {
+      error.value = ErrorHandler.handleError(e).message;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> loadMoreItems() async {
+    if (isMoreLoading.value || !hasMore.value) return;
+    isMoreLoading.value = true;
+
+    try {
+      final snap = await _parentRepository.queryParents(
+        searchQuery: searchQuery.value,
+        sortByField: sortByField.value,
+        descending: sortDescending.value,
+        startAfterDoc: _lastDoc,
+        limit: _limit,
+      );
+
+      if (snap.docs.isNotEmpty) {
+        _lastDoc = snap.docs.last;
+        final list = snap.docs.map((doc) => ParentModel.fromJson(doc.data())).toList();
+        items.addAll(list);
+        hasMore.value = list.length == _limit;
+      } else {
+        hasMore.value = false;
+      }
+    } catch (e) {
+      Helpers.showSnackbar(title: 'Failed to Load More', message: ErrorHandler.handleError(e).message, isError: true);
+    } finally {
+      isMoreLoading.value = false;
+    }
+  }
+
+  Future<void> create(ParentModel model) async {
+    Helpers.showLoadingDialog('Creating Parent...');
+    try {
+      await _parentRepository.create(model);
+      Helpers.hideLoadingDialog();
+      Helpers.showSnackbar(title: 'Success', message: 'Parent created successfully');
+      loadItems(refresh: true);
+      Get.back();
+    } catch (e) {
+      Helpers.hideLoadingDialog();
+      Helpers.showSnackbar(title: 'Failed to Create', message: ErrorHandler.handleError(e).message, isError: true);
+    }
+  }
+
+  Future<void> updateItem(ParentModel model) async {
+    Helpers.showLoadingDialog('Updating Parent...');
+    try {
+      await _parentRepository.update(model);
+      Helpers.hideLoadingDialog();
+      Helpers.showSnackbar(title: 'Success', message: 'Parent updated successfully');
+      loadItems(refresh: true);
+      Get.back();
+    } catch (e) {
+      Helpers.hideLoadingDialog();
+      Helpers.showSnackbar(title: 'Failed to Update', message: ErrorHandler.handleError(e).message, isError: true);
+    }
+  }
+
+  Future<void> delete(String id) async {
+    Helpers.showLoadingDialog('Deleting Parent...');
+    try {
+      await _parentRepository.delete(id);
+      items.removeWhere((s) => s.id == id);
+      Helpers.hideLoadingDialog();
+      Helpers.showSnackbar(title: 'Success', message: 'Parent deleted successfully');
+    } catch (e) {
+      Helpers.hideLoadingDialog();
+      Helpers.showSnackbar(title: 'Delete Failed', message: ErrorHandler.handleError(e).message, isError: true);
+    }
+  }
+
+  void updateSorting(String field, bool descending) {
+    sortByField.value = field;
+    sortDescending.value = descending;
+    loadItems(refresh: true);
+  }
+}

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Taleem - Attendance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#004c6e",
+                    "surface-container-low": "#f2f3ff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary": "#b90538",
+                    "on-surface": "#131b2e",
+                    "on-secondary-fixed": "#001e2f",
+                    "outline": "#767586",
+                    "error-container": "#ffdad6",
+                    "secondary": "#006591",
+                    "on-secondary-container": "#004666",
+                    "secondary-fixed": "#c9e6ff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-container": "#eaedff",
+                    "on-surface-variant": "#464554",
+                    "background": "#faf8ff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#c7c4d7",
+                    "primary-container": "#6063ee",
+                    "tertiary-fixed-dim": "#ffb2b7",
+                    "primary": "#4648d4",
+                    "surface-dim": "#d2d9f4",
+                    "inverse-surface": "#283044",
+                    "on-background": "#131b2e",
+                    "inverse-on-surface": "#eef0ff",
+                    "surface-container-high": "#e2e7ff",
+                    "surface-bright": "#faf8ff",
+                    "tertiary-container": "#dc2c4f",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "tertiary-fixed": "#ffdadb",
+                    "surface-tint": "#494bd6",
+                    "secondary-fixed-dim": "#89ceff",
+                    "on-primary-fixed": "#07006c",
+                    "secondary-container": "#39b8fd",
+                    "on-tertiary-container": "#fffbff",
+                    "primary-fixed": "#e1e0ff",
+                    "on-primary-container": "#fffbff",
+                    "surface-container-highest": "#dae2fd",
+                    "surface-variant": "#dae2fd",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#92002a",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed": "#40000d",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "inverse-primary": "#c0c1ff",
+                    "surface": "#faf8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "xs": "8px",
+                    "xl": "48px",
+                    "lg": "32px",
+                    "sm": "16px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "container-max": "1280px",
+                    "md": "24px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "title-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                    "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                    "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                    "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(199, 196, 215, 0.2);
+        }
+        .ai-insight-border {
+            border: 1px solid;
+            border-image: linear-gradient(45deg, #6063ee, #c0c1ff) 1;
+        }
+        /* Custom scrollbar for desktop */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #767586;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface/60 backdrop-blur-xl sticky top-0 w-full z-50 flex justify-between items-center px-gutter py-sm shadow-sm md:hidden border-b border-outline-variant/20">
+<div class="flex items-center gap-xs">
+<button class="p-2 rounded-full hover:bg-surface-container-high/50 transition-all duration-300 active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+<h1 class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary">Taleem</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional educator, wearing modern business casual attire, with a warm and approachable expression. The lighting is soft and studio-quality, emphasizing a modern, professional academic aesthetic. The background is a slightly blurred, bright office environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgJnOquigjQVx-FoWP10N2Hrcn3O0rShy0FYTqDDQ3Ba8q2TyzRoaiErstmCU1F3OEJRzTSAwRMRluEkqBkks9v7pCL1WGi60JC51Uu2WkkZlsFxcnbsRJtQHB_oENkHMC9I1hR2Dfjen40v2zrR-KXmt9tQfEQxyCwOXxWkllEpVFTJpeU379M7GeDJ8McpGBz2Pei1gRxQvtx65BCMGequHeZGnyVMPsWsTcUvFxofzpVp7vr6mCQ9Gj_Q-1mBNTb1djXxPJ8glH"/>
+</div>
+</header>
+<!-- Desktop Sidebar/TopNav Placeholder (Simplified for single-page view) -->
+<nav class="hidden md:flex bg-surface/60 backdrop-blur-xl sticky top-0 w-full z-50 justify-between items-center px-gutter py-sm shadow-sm border-b border-outline-variant/20">
+<div class="flex items-center gap-lg">
+<h1 class="font-display-lg text-display-lg font-bold text-primary">Taleem</h1>
+<div class="flex gap-md">
+<a class="font-label-caps text-label-caps flex items-center gap-xs px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                     Dashboard
+                 </a>
+<a class="font-label-caps text-label-caps flex items-center gap-xs px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+                     Students
+                 </a>
+<a class="font-label-caps text-label-caps flex items-center gap-xs px-3 py-2 rounded-lg bg-primary-container text-on-primary-container hover:bg-primary-container/80 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event_available</span>
+                     Attendance
+                 </a>
+<a class="font-label-caps text-label-caps flex items-center gap-xs px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-all" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+                     AI Assistant
+                 </a>
+</div>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional educator, wearing modern business casual attire, with a warm and approachable expression. The lighting is soft and studio-quality, emphasizing a modern, professional academic aesthetic. The background is a slightly blurred, bright office environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKSTUR9g6NXMMt7szMGjwJwpxeYr2zfePqKD6XQgwktb8Y38c0QiKqAnb2tZjaSmvYVN5NSAnrEWL5rqw-7XE-K6zf0D_nIM6-yGsrw0DFHQASJp-oEN81QBs7kbgGcLLfoHlpwUKLc5ESMYSVeJ0d8gf-PfcP55Ih2QdlKkvumx6Y7JOWtz-klBYSRkt8GHNSWBz9BHFKEPG9X5_DjsbNtE_rktm8scsV2YWE3WF__WDoRq8PzG86cjCIlDUrbmKTrPHl7n6s8glZ"/>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-gutter pt-lg pb-xl">
+<!-- Header & Controls -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-sm mb-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">Attendance Tracker</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Manage daily attendance for Grade 10 - Mathematics.</p>
+</div>
+<div class="flex flex-wrap items-center gap-xs w-full md:w-auto">
+<!-- Date Picker / Calendar View Toggle -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-lg p-1 w-full md:w-auto">
+<button class="flex items-center gap-xs px-3 py-1.5 rounded bg-surface-container text-on-surface font-body-sm text-body-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>Today, Oct 24</span>
+</button>
+<button class="flex items-center justify-center p-1.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors ml-1">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="flex items-center justify-center p-1.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<!-- Batch Filter -->
+<div class="relative w-full md:w-auto">
+<select class="appearance-none w-full md:w-48 bg-surface-container-lowest border border-outline-variant text-on-surface font-body-sm text-body-sm rounded-lg pl-3 pr-8 py-2 focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+<option>Grade 10 - Math (A)</option>
+<option>Grade 10 - Math (B)</option>
+<option>Grade 11 - Physics</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- Smart Filters & Search Bar -->
+<div class="glass-panel rounded-xl p-sm mb-lg flex flex-col md:flex-row gap-sm items-center justify-between">
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-body-sm text-body-sm rounded-lg pl-10 pr-3 py-2 focus:ring-2 focus:ring-primary focus:border-primary transition-colors placeholder:text-on-surface-variant/70" placeholder="Search students..." type="text"/>
+</div>
+<div class="flex items-center gap-xs w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+<button class="whitespace-nowrap px-3 py-1.5 rounded-full bg-primary-container/20 text-primary font-label-caps text-label-caps border border-primary/20 hover:bg-primary-container/30 transition-colors">
+                    All Students (32)
+                </button>
+<button class="whitespace-nowrap px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:bg-surface-container transition-colors">
+                    Unmarked (12)
+                </button>
+<button class="whitespace-nowrap px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:bg-surface-container transition-colors">
+                    Absent (3)
+                </button>
+</div>
+</div>
+<!-- Attendance List -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl overflow-hidden shadow-sm">
+<!-- Header Row -->
+<div class="hidden md:grid grid-cols-12 gap-sm px-md py-sm bg-surface-container border-b border-outline-variant/50">
+<div class="col-span-5 font-label-caps text-label-caps text-on-surface-variant">Student</div>
+<div class="col-span-2 font-label-caps text-label-caps text-on-surface-variant text-center">Status</div>
+<div class="col-span-4 font-label-caps text-label-caps text-on-surface-variant text-center">Mark Attendance</div>
+<div class="col-span-1 font-label-caps text-label-caps text-on-surface-variant text-right">More</div>
+</div>
+<!-- List Items -->
+<div class="divide-y divide-outline-variant/30">
+<!-- Student 1 -->
+<div class="flex flex-col md:grid md:grid-cols-12 gap-y-xs md:gap-sm px-sm md:px-md py-sm items-center hover:bg-surface-container-lowest/80 transition-colors">
+<div class="col-span-5 flex items-center gap-sm w-full">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center font-title-lg text-title-lg text-on-surface-variant shrink-0">
+                            AA
+                        </div>
+<div>
+<h3 class="font-body-md text-body-md font-semibold text-on-surface">Aaliyah Ahmed</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ID: 1042 • 98% Attendance</p>
+</div>
+</div>
+<div class="col-span-2 w-full md:text-center flex justify-between md:block items-center">
+<span class="md:hidden font-body-sm text-body-sm text-on-surface-variant">Status:</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#e6f4ea] text-[#137333] font-label-caps text-[10px]">
+<span class="material-symbols-outlined text-[12px]">check_circle</span> Present
+                        </span>
+</div>
+<div class="col-span-4 w-full flex justify-center gap-xs">
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm flex justify-center items-center gap-1">
+                            Present
+                        </button>
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm flex justify-center items-center gap-1">
+                            Absent
+                        </button>
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm flex justify-center items-center gap-1">
+                            Leave
+                        </button>
+</div>
+<div class="col-span-1 w-full md:text-right hidden md:block">
+<button class="p-1.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Student 2 (Absent Example) -->
+<div class="flex flex-col md:grid md:grid-cols-12 gap-y-xs md:gap-sm px-sm md:px-md py-sm items-center hover:bg-surface-container-lowest/80 transition-colors bg-error-container/10">
+<div class="col-span-5 flex items-center gap-sm w-full">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center font-title-lg text-title-lg text-on-surface-variant shrink-0">
+                            BS
+                        </div>
+<div>
+<h3 class="font-body-md text-body-md font-semibold text-on-surface">Bilal Saeed</h3>
+<p class="font-body-sm text-body-sm text-error">ID: 1045 • 72% Attendance (Low)</p>
+</div>
+</div>
+<div class="col-span-2 w-full md:text-center flex justify-between md:block items-center">
+<span class="md:hidden font-body-sm text-body-sm text-on-surface-variant">Status:</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-caps text-[10px]">
+<span class="material-symbols-outlined text-[12px]">cancel</span> Absent
+                        </span>
+</div>
+<div class="col-span-4 w-full flex justify-center gap-xs">
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm flex justify-center items-center gap-1">
+                            Present
+                        </button>
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-error bg-error text-on-error font-body-sm text-body-sm flex justify-center items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check</span> Absent
+                        </button>
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm flex justify-center items-center gap-1">
+                            Leave
+                        </button>
+</div>
+<div class="col-span-1 w-full md:text-right hidden md:block">
+<button class="p-1.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Student 3 (Unmarked Example) -->
+<div class="flex flex-col md:grid md:grid-cols-12 gap-y-xs md:gap-sm px-sm md:px-md py-sm items-center hover:bg-surface-container-lowest/80 transition-colors">
+<div class="col-span-5 flex items-center gap-sm w-full">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center font-title-lg text-title-lg text-on-surface-variant shrink-0">
+                            FZ
+                        </div>
+<div>
+<h3 class="font-body-md text-body-md font-semibold text-on-surface">Fatima Zaman</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ID: 1050 • 95% Attendance</p>
+</div>
+</div>
+<div class="col-span-2 w-full md:text-center flex justify-between md:block items-center">
+<span class="md:hidden font-body-sm text-body-sm text-on-surface-variant">Status:</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[10px]">
+<span class="material-symbols-outlined text-[12px]">help</span> Unmarked
+                        </span>
+</div>
+<div class="col-span-4 w-full flex justify-center gap-xs">
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm flex justify-center items-center gap-1">
+                            Present
+                        </button>
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm flex justify-center items-center gap-1">
+                            Absent
+                        </button>
+<button class="flex-1 md:flex-none w-24 py-1.5 rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm flex justify-center items-center gap-1">
+                            Leave
+                        </button>
+</div>
+<div class="col-span-1 w-full md:text-right hidden md:block">
+<button class="p-1.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (Glassmorphic) -->
+<div class="fixed bottom-24 md:bottom-lg right-margin-mobile md:right-gutter z-40">
+<button class="glass-panel flex items-center gap-xs px-4 py-3 rounded-full bg-primary/90 text-on-primary hover:-translate-y-1 hover:shadow-lg transition-all duration-300 shadow-[0_4px_20px_rgba(70,72,212,0.3)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+<span class="font-title-lg text-title-lg text-sm md:text-base whitespace-nowrap">Send Alerts (3)</span>
+</button>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface/60 backdrop-blur-xl border-t border-outline-variant/20 fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe pt-2 pb-2 rounded-t-xl shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-primary-container/30 transition-all rounded-xl">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-primary-container/30 transition-all rounded-xl">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-1">Students</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-90 transition-transform shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event_available</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-1">Attendance</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-primary-container/30 transition-all rounded-xl">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-1">AI Assistant</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-primary-container/30 transition-all rounded-xl">
+<span class="material-symbols-outlined">more_horiz</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-1">More</span>
+</div>
+</nav>
+</body></html>

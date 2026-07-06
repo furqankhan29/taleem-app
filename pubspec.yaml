@@ -1,0 +1,77 @@
+name: taleem
+description: "Taleem AI Tuition Manager - A premium educational management platform"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Firebase
+  firebase_core: ^3.8.1
+  firebase_auth: ^5.4.1
+  cloud_firestore: ^5.6.1
+  firebase_storage: ^12.4.1
+  firebase_messaging: ^15.2.1
+  firebase_analytics: ^11.4.1
+  firebase_crashlytics: ^4.2.1
+  firebase_app_check: ^0.3.2+1
+  firebase_remote_config: ^5.2.1
+
+  # State Management & Architecture
+  get: ^4.7.2
+
+  # UI Components
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.17
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  fl_chart: ^0.70.2
+  qr_flutter: ^4.1.0
+
+  # Local Storage & Caching
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  shared_preferences: ^2.3.5
+
+  # Utilities
+  intl: ^0.20.2
+  connectivity_plus: ^6.1.4
+  url_launcher: ^6.3.1
+  share_plus: ^10.1.4
+  path_provider: ^2.1.5
+  image_picker: ^1.1.2
+  file_picker: ^8.1.7
+  permission_handler: ^11.3.1
+  uuid: ^4.5.1
+
+  # Exports
+  pdf: ^3.11.2
+  printing: ^5.14.2
+  excel: ^4.0.6
+  csv: ^6.0.0
+
+  # Auth
+  google_sign_in: ^6.2.2
+
+  # QR
+  mobile_scanner: ^6.0.5
+
+  # Icons
+  material_symbols_icons: ^4.2815.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Taleem - Student Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#004c6e",
+                        "surface-container-low": "#f2f3ff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#b90538",
+                        "on-surface": "#131b2e",
+                        "on-secondary-fixed": "#001e2f",
+                        "outline": "#767586",
+                        "error-container": "#ffdad6",
+                        "secondary": "#006591",
+                        "on-secondary-container": "#004666",
+                        "secondary-fixed": "#c9e6ff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container": "#eaedff",
+                        "on-surface-variant": "#464554",
+                        "background": "#faf8ff",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c7c4d7",
+                        "primary-container": "#6063ee",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "primary": "#4648d4",
+                        "surface-dim": "#d2d9f4",
+                        "inverse-surface": "#283044",
+                        "on-background": "#131b2e",
+                        "inverse-on-surface": "#eef0ff",
+                        "surface-container-high": "#e2e7ff",
+                        "surface-bright": "#faf8ff",
+                        "tertiary-container": "#dc2c4f",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface-tint": "#494bd6",
+                        "secondary-fixed-dim": "#89ceff",
+                        "on-primary-fixed": "#07006c",
+                        "secondary-container": "#39b8fd",
+                        "on-tertiary-container": "#fffbff",
+                        "primary-fixed": "#e1e0ff",
+                        "on-primary-container": "#fffbff",
+                        "surface-container-highest": "#dae2fd",
+                        "surface-variant": "#dae2fd",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#92002a",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#40000d",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "inverse-primary": "#c0c1ff",
+                        "surface": "#faf8ff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "base": "4px",
+                        "xs": "8px",
+                        "xl": "48px",
+                        "lg": "32px",
+                        "sm": "16px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "md": "24px"
+                    },
+                    fontFamily: {
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "title-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    fontSize: {
+                        "display-lg-mobile": ["36px", { lineHeight: "44px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "700" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(70, 72, 212, 0.05);
+        }
+        
+        .ai-insight {
+            background: linear-gradient(135deg, rgba(96, 99, 238, 0.05) 0%, rgba(220, 44, 79, 0.05) 100%);
+            border: 1px solid rgba(96, 99, 238, 0.2);
+        }
+        
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Hidden scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen relative pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full bg-surface/60 backdrop-blur-xl shadow-sm z-50">
+<div class="flex justify-between items-center px-gutter py-sm w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-xs cursor-pointer hover:bg-surface-container-high/50 transition-all duration-300 rounded-full p-2 -ml-2" onclick="window.history.back()">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="arrow_back">arrow_back</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary">Student Profile</h1>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container shrink-0">
+<img class="w-full h-full object-cover" data-alt="Professional corporate headshot of a teacher or administrator, smiling softly. Crisp, high-key studio lighting with a subtle blueish-white corporate background. Modern fintech aesthetic, high resolution, photorealistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtaPZex_jbaJKcxiucHvPA98AFXAyyRwOIkW5_eG2oO83Gz1HlcRWekotrB5dNEhIupQv72UqLzleovxXJaQ7-mFm-m_uT-m6d4V1jfNKqGUE_Qq_LIYJ7Vn3digX4FNgPvHLkUAiPsFTPqFSBJEy04P2N-h2EFaZnIVI2LcUiSLq0sRiqstjCNdbWXatkvHaguE05O8UCNlQSFrdhQW0oH5_7fC48TUHu8mJYg02AVzC8kEpQLoaVWkp7OAs_Nz_FlcQK616kLMSV"/>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-lg space-y-lg">
+<!-- Profile Header Card (Glassmorphic) -->
+<section class="glass-panel rounded-xl p-sm md:p-md relative overflow-hidden">
+<!-- Decorative gradient bg -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container/20 rounded-full blur-3xl -z-10 -translate-y-1/2 translate-x-1/4"></div>
+<div class="flex flex-col md:flex-row gap-sm items-start md:items-center">
+<!-- Avatar -->
+<div class="relative">
+<div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-surface shadow-lg">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young male student of South Asian descent, looking confident and engaged. Bright, soft natural lighting illuminating a modern classroom setting in the background. Clean, modern corporate aesthetic, vibrant but professional colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuBR_hKP795Shuy3QHRyU2V3djf13Wk7KCLiv10SqdHEa4Le6KweUcXgNM7BMtVMzfFgymOb-irfc5Iwp5cRf4vGX_BVtFMU3u9GX6P73rgh1x7rxFcFbd-c1A-aAWCsIzgE_x279CcMElzUromGzYo0AqaNXU7zEk1zTDeC0v7luxigPAv-zZkIEInm6dgfGcHAMBKbuFv2smaKZKo6EXTjh-cIuJgLcT6bZjOWkYD_vt7CwnJ-sA8DxVL3VViMw5evRdCC5NuyLy"/>
+</div>
+<div class="absolute bottom-0 right-0 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps px-3 py-1 rounded-full border-2 border-surface shadow-sm flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                        Active
+                    </div>
+</div>
+<!-- Info -->
+<div class="flex-1 space-y-1">
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">Aaryan Sharma</h2>
+<p class="font-title-lg text-title-lg text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="school">school</span>
+                        Grade 10 • Section B
+                    </p>
+<p class="font-body-sm text-body-sm text-outline flex items-center gap-xs pt-1">
+<span class="material-symbols-outlined text-sm" data-icon="id_card">id_card</span>
+                        ID: TAL-2023-8492
+                    </p>
+</div>
+<!-- Quick Actions -->
+<div class="flex flex-row md:flex-col gap-xs w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0 pt-4 md:pt-0">
+<button class="flex items-center gap-2 bg-surface text-primary border border-outline-variant/30 px-4 py-2 rounded-lg font-title-lg text-body-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]" data-icon="chat">chat</span>
+                        WhatsApp
+                    </button>
+<button class="flex items-center gap-2 bg-surface text-on-surface-variant border border-outline-variant/30 px-4 py-2 rounded-lg font-title-lg text-body-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]" data-icon="call">call</span>
+                        Call Parent
+                    </button>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-lg font-title-lg text-body-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:bg-surface-tint transition-all whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]" data-icon="qr_code">qr_code</span>
+                        View QR
+                    </button>
+</div>
+</div>
+</section>
+<!-- Tabs Navigation -->
+<nav class="flex border-b border-outline-variant/30 overflow-x-auto no-scrollbar">
+<button class="tab-btn px-4 py-3 font-title-lg text-title-lg text-primary border-b-2 border-primary whitespace-nowrap" data-target="overview">Overview</button>
+<button class="tab-btn px-4 py-3 font-title-lg text-body-md text-on-surface-variant border-b-2 border-transparent hover:text-primary whitespace-nowrap transition-colors" data-target="attendance">Attendance</button>
+<button class="tab-btn px-4 py-3 font-title-lg text-body-md text-on-surface-variant border-b-2 border-transparent hover:text-primary whitespace-nowrap transition-colors" data-target="fees">Fees</button>
+<button class="tab-btn px-4 py-3 font-title-lg text-body-md text-on-surface-variant border-b-2 border-transparent hover:text-primary whitespace-nowrap transition-colors" data-target="documents">Documents</button>
+</nav>
+<!-- Tab Contents -->
+<div class="relative min-h-[400px]">
+<!-- OVERVIEW TAB -->
+<div class="tab-content active space-y-lg" id="overview">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<!-- AI Insight Card -->
+<div class="ai-insight rounded-xl p-sm col-span-1 md:col-span-2 shadow-sm">
+<div class="flex items-center gap-xs mb-3">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-title-lg text-title-lg text-primary">AI Performance Insight</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+                            Aaryan has shown a <strong>15% improvement</strong> in Mathematics over the last quarter. However, attendance in morning sessions has dropped slightly. Consider a gentle follow-up regarding morning punctuality.
+                        </p>
+</div>
+<!-- Academic Details -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-sm shadow-sm">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline" data-icon="menu_book">menu_book</span>
+                            Academic Profile
+                        </h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center pb-2 border-b border-outline-variant/20">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Current Average</span>
+<span class="font-title-lg text-title-lg text-primary">A- (88%)</span>
+</div>
+<div class="flex justify-between items-center pb-2 border-b border-outline-variant/20">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Class Rank</span>
+<span class="font-title-lg text-title-lg text-on-surface">12 / 45</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Strengths</span>
+<span class="font-body-md text-body-md text-on-surface">Physics, English</span>
+</div>
+</div>
+</div>
+<!-- Contact & Emergency -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-sm shadow-sm">
+<h3 class="font-title-lg text-title-lg text-tertiary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+                            Emergency Contact
+                        </h3>
+<div class="space-y-3">
+<div>
+<p class="font-label-caps text-label-caps text-outline uppercase">Primary Guardian</p>
+<p class="font-title-lg text-title-lg text-on-surface">Rajesh Sharma (Father)</p>
+<p class="font-body-md text-body-md text-on-surface-variant">+91 98765 43210</p>
+</div>
+<div class="pt-2 border-t border-outline-variant/20">
+<p class="font-label-caps text-label-caps text-outline uppercase">Home Address</p>
+<p class="font-body-md text-body-md text-on-surface">124 Maple Street, Block C<br/>Cyber Hub, 110022</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ATTENDANCE TAB (Placeholder) -->
+<div class="tab-content" id="attendance">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-sm shadow-sm flex flex-col items-center justify-center py-16 text-center">
+<span class="material-symbols-outlined text-outline-variant text-[48px] mb-4" data-icon="calendar_month">calendar_month</span>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Attendance Records</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Detailed attendance metrics and calendar view will appear here.</p>
+</div>
+</div>
+<!-- FEES TAB (Placeholder) -->
+<div class="tab-content" id="fees">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-sm shadow-sm flex flex-col items-center justify-center py-16 text-center">
+<span class="material-symbols-outlined text-outline-variant text-[48px] mb-4" data-icon="account_balance_wallet">account_balance_wallet</span>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Fee Status</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Financial records, pending dues, and payment history.</p>
+</div>
+</div>
+<!-- DOCUMENTS TAB (Placeholder) -->
+<div class="tab-content" id="documents">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-sm shadow-sm flex flex-col items-center justify-center py-16 text-center">
+<span class="material-symbols-outlined text-outline-variant text-[48px] mb-4" data-icon="folder">folder</span>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Student Documents</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">ID cards, previous report cards, and medical certificates.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full rounded-t-xl bg-surface/60 backdrop-blur-xl border-t border-outline-variant/20 shadow-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe pt-2 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-primary-container/30 transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 hover:bg-primary-container/30 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-caps text-label-caps mt-1">Students</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-primary-container/30 transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+<span class="font-label-caps text-label-caps mt-1">Attendance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-primary-container/30 transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-label-caps mt-1">AI Assistant</span>
+</a>
+</nav>
+<script>
+        // Simple Tab Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active states from all buttons
+                    tabBtns.forEach(b => {
+                        b.classList.remove('text-primary', 'border-primary');
+                        b.classList.add('text-on-surface-variant', 'border-transparent');
+                    });
+                    
+                    // Add active state to clicked button
+                    btn.classList.add('text-primary', 'border-primary');
+                    btn.classList.remove('text-on-surface-variant', 'border-transparent');
+
+                    // Hide all contents
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // Show target content
+                    const targetId = btn.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body></html>

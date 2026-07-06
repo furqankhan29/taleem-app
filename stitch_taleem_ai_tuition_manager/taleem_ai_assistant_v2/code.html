@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Taleem - AI Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#001e2f",
+                        "surface": "#faf8ff",
+                        "surface-container-highest": "#dae2fc",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#920029",
+                        "success-container": "#c9e6ff",
+                        "secondary": "#006590",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#85cbfd",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "primary-fixed": "#e1e0ff",
+                        "surface-container-low": "#f2f3ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e1e7ff",
+                        "primary": "#2c2abc",
+                        "outline": "#767586",
+                        "tertiary": "#8e0028",
+                        "tertiary-container": "#b90538",
+                        "ambient-shadow": "rgba(70, 72, 212, 0.15)",
+                        "on-secondary-fixed-variant": "#004c6e",
+                        "on-tertiary-container": "#ffc7ca",
+                        "on-primary-fixed-variant": "#2e2ebe",
+                        "on-secondary-container": "#00567c",
+                        "background": "#faf8ff",
+                        "surface-glass": "rgba(255, 255, 255, 0.7)",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d2d9f4",
+                        "on-primary-container": "#d1d1ff",
+                        "surface-tint": "#484bd6",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-primary-fixed": "#06006c",
+                        "inverse-surface": "#283044",
+                        "primary-container": "#4648d4",
+                        "outline-variant": "#c6c5d7",
+                        "on-surface": "#131b2e",
+                        "surface-container": "#eaedff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdadb",
+                        "on-tertiary-fixed": "#40000d",
+                        "warning-container": "#ffdad6",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-surface-variant": "#464554",
+                        "secondary-fixed": "#c8e6ff",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "inverse-primary": "#c0c1ff",
+                        "surface-variant": "#dae2fc",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#89ceff",
+                        "on-background": "#131b2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "48px",
+                        "container-max": "1280px",
+                        "xs": "8px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "md": "24px",
+                        "lg": "32px",
+                        "sm": "16px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .dark .glass-panel {
+            background-color: rgba(30, 30, 40, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Chat bubble animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message-appear {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        /* Typing indicator animation */
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .typing-dot {
+            animation: typing 1s infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col overflow-hidden relative">
+<!-- Ambient Background Elements -->
+<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary-fixed-dim opacity-30 blur-[100px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-fixed-dim opacity-30 blur-[120px]"></div>
+</div>
+<!-- NavigationDrawer (Web) -->
+<aside class="hidden md:flex flex-col h-full w-80 rounded-r-xl bg-surface border-r border-outline-variant shadow-xl fixed inset-y-0 left-0 z-[60] p-md">
+<div class="flex items-center gap-4 mb-8">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="A professional headshot of a school administrator in a modern office setting. Soft, natural lighting highlights a friendly expression. The background is slightly blurred with hints of glass partitions and indoor plants. Corporate, modern, approachable aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-se2n9Ih6HP-J-1ih06TqQAj8rkQdgLdVxQdfyL_7Vr2qtI0bdMGsVFRNLGKQ3VjQB41Pkn90W8_RWOdjbD6Lf49xONE9JNH1jt3oshnkijGvf-stx9pvUjxJthY9tt3Z8oI7RBc99u5JOVfu-Bi2q8bxKNcpH_PDBBYX4JD746BQh-__pfsI0Wr5vi5UiHLazJ1_FG8Abe7qLDP5zZojNBu4cAlnbfa0OZ4fF7dPAa8iEfPy2iYHAnMC6f8IotPnIMyBZjyHgRGi"/>
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Admin User</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Taleem Premium <span class="text-xs ml-1 opacity-70">v1.0.4</span></p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:pl-5 transition-all duration-200 ease-out font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:pl-5 transition-all duration-200 ease-out font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Students</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container text-on-secondary-container font-bold hover:pl-5 transition-all duration-200 ease-out font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined fill" data-icon="smart_toy">smart_toy</span>
+<span>AI Assistant</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:pl-5 transition-all duration-200 ease-out font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span>Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:pl-5 transition-all duration-200 ease-out font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:bg-error-container transition-all duration-200 ease-out font-body-md text-body-md mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative z-10 w-full md:pl-80 h-screen transition-all duration-300 pb-20 md:pb-0">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full bg-surface-glass backdrop-blur-lg border-b border-white/20 shadow-sm z-50 flex justify-between items-center px-gutter py-base max-w-container-max mx-auto h-[72px]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-primary shadow-[0_10px_30px_-10px_rgba(70,72,212,0.15)] md:hidden">
+<span class="material-symbols-outlined fill text-[20px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Taleem AI</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant hidden md:block">Your intelligent administrative partner</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors hidden md:block">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+<img class="w-8 h-8 rounded-full object-cover md:hidden cursor-pointer active:scale-95 transition-transform" data-alt="A small circular avatar of a professional administrator, used in a top navigation bar. Clean, modern, high key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl4lFN9-Fm4PsNHNzOQJgyqYlHLUfFZLO5GdZZbmtbpLhlVDVRKoEDbsmB1GSh9F5KWgxpEgDgg9nm_CfUdNhSUoJjq9O0qmpQKCR39my7fPN6ojIKtZy4QPGM3r4_j3oJA1kr6-wnbshkaSqsWrZUPdmkTnBLcrRu7x97SvS8qbf5y_-8lLWheeH3avbbnqqqX6WCDbQr15K-1tLcCglxQdLHPozx1FOYM4-U-qSPu9k7k5ip6kH0df7OIMSbADFEW2AaK9OyZ1DH"/>
+</div>
+</header>
+<!-- Chat Container -->
+<div class="flex-1 overflow-y-auto no-scrollbar p-sm md:p-gutter flex flex-col gap-6 relative" id="chat-container">
+<!-- Date Separator -->
+<div class="flex justify-center my-2">
+<span class="font-label-caps text-label-caps bg-surface-container-low text-on-surface-variant px-3 py-1 rounded-full border border-outline-variant/30">TODAY</span>
+</div>
+<!-- AI Welcome Message -->
+<div class="flex gap-3 max-w-[90%] md:max-w-[70%] message-appear">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_5px_15px_-5px_rgba(70,72,212,0.3)]">
+<span class="material-symbols-outlined text-white text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="glass-panel p-4 rounded-2xl rounded-tl-sm text-on-surface shadow-sm">
+<p class="font-body-md text-body-md">Good morning! I've prepared a quick summary of today's key administrative items. You have <strong class="text-primary">3</strong> urgent alerts regarding fee defaults and <strong class="text-secondary">2</strong> staff absences.</p>
+<p class="font-body-md text-body-md mt-2">How would you like to proceed?</p>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant/70 ml-1">09:00 AM</span>
+</div>
+</div>
+<!-- Suggested Actions (Initial) -->
+<div class="flex gap-2 pl-11 overflow-x-auto no-scrollbar py-2 -mt-4 message-appear" style="animation-delay: 0.1s;">
+<button class="whitespace-nowrap px-4 py-2 bg-surface border border-primary-fixed rounded-full font-body-sm text-body-sm text-primary hover:bg-primary-container/20 transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="payments">payments</span>
+                    Review Fee Defaults
+                </button>
+<button class="whitespace-nowrap px-4 py-2 bg-surface border border-outline-variant rounded-full font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="group_remove">group_remove</span>
+                    View Staff Absences
+                </button>
+</div>
+<!-- User Message -->
+<div class="flex gap-3 max-w-[90%] md:max-w-[70%] self-end flex-row-reverse message-appear" style="animation-delay: 0.2s;">
+<img class="w-8 h-8 rounded-full object-cover mt-1 flex-shrink-0" data-alt="A small circular avatar of a professional administrator. Clean, modern, high key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxxD89YWzwI0kxBZxNJZV6vmz6yAfuBZ08kzAYRzVAo8RW4S4KIIASPyHwqcT-exmk_gsfizuvG1TJLPnUwoErrXWIqsxO4XyRMny5Z9syUUoDGGu9IpD3dPQ__6Uh9c6Qcq_f7Ns1qxZeF4XdfTP0lAEiIA3IJyA7TGe-RW-pwRFwLhJLrvuA_gwb9b9DzBTYPmY6wIuTn8BkofNr3F_IWvjt-nTIP18TV2-Q0krU3-QfA_Fgtn4h11SRb6Wc3UawelgyNBXLEUC0"/>
+<div class="flex flex-col gap-1 items-end">
+<div class="bg-primary text-white p-4 rounded-2xl rounded-tr-sm shadow-[0_10px_30px_-10px_rgba(70,72,212,0.25)]">
+<p class="font-body-md text-body-md">Show me the fee defaulters list for Grade 10, please.</p>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant/70 mr-1">09:05 AM</span>
+</div>
+</div>
+<!-- AI Response with Rich Data Card -->
+<div class="flex gap-3 max-w-[95%] md:max-w-[80%] message-appear" style="animation-delay: 0.3s;">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_5px_15px_-5px_rgba(70,72,212,0.3)]">
+<span class="material-symbols-outlined text-white text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="flex flex-col gap-2 w-full">
+<div class="glass-panel p-4 rounded-2xl rounded-tl-sm text-on-surface shadow-sm w-max max-w-full">
+<p class="font-body-md text-body-md">Here is the fee default report for Grade 10. There are currently 4 students with outstanding balances exceeding 30 days.</p>
+</div>
+<!-- Rich Data Card (Bento Grid Style) -->
+<div class="bg-surface border border-outline-variant/50 rounded-xl shadow-md overflow-hidden flex flex-col w-full max-w-2xl">
+<div class="bg-surface-container-low p-4 border-b border-outline-variant/30 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<h4 class="font-title-lg text-title-lg text-on-surface">Grade 10 Fee Defaults</h4>
+</div>
+<span class="font-label-caps text-label-caps bg-error-container text-on-error-container px-2 py-1 rounded-md">ACTION REQ</span>
+</div>
+<div class="p-0 flex flex-col">
+<!-- List Item 1 -->
+<div class="flex justify-between items-center p-4 border-b border-outline-variant/20 hover:bg-surface-container-lowest transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-on-primary-fixed">ZA</div>
+<div>
+<p class="font-body-md text-body-md font-semibold text-on-surface">Zainab Ali</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Grade 10-A • 45 days overdue</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-md text-body-md font-bold text-error">$450.00</p>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex justify-between items-center p-4 border-b border-outline-variant/20 hover:bg-surface-container-lowest transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center font-bold text-on-secondary-fixed">OK</div>
+<div>
+<p class="font-body-md text-body-md font-semibold text-on-surface">Omar Khan</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Grade 10-B • 32 days overdue</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-md text-body-md font-bold text-error">$300.00</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-3 border-t border-outline-variant/30 flex justify-end gap-2">
+<button class="px-4 py-2 rounded-lg font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container transition-colors">View All (4)</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg font-body-sm text-body-sm shadow-sm hover:opacity-90 transition-opacity flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="send">send</span> Draft Reminders
+                            </button>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant/70 ml-1">09:06 AM</span>
+</div>
+</div>
+<!-- Typing Indicator (Simulated active state) -->
+<div class="flex gap-3 max-w-[90%] message-appear opacity-0" id="typing-indicator" style="animation-delay: 0.5s; animation-fill-mode: forwards;">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0 mt-1">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="glass-panel px-4 py-3 rounded-2xl rounded-tl-sm flex items-center gap-1">
+<div class="w-2 h-2 bg-primary rounded-full typing-dot"></div>
+<div class="w-2 h-2 bg-primary rounded-full typing-dot"></div>
+<div class="w-2 h-2 bg-primary rounded-full typing-dot"></div>
+</div>
+</div>
+<!-- Spacer for bottom input area -->
+<div class="h-24"></div>
+</div>
+<!-- Enhanced Input Area -->
+<div class="fixed md:absolute bottom-[72px] md:bottom-0 left-0 md:left-auto w-full bg-surface/80 backdrop-blur-xl border-t border-outline-variant/30 p-sm z-40 pb-safe shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.05)]">
+<div class="max-w-4xl mx-auto flex flex-col gap-2">
+<!-- Contextual Suggestions -->
+<div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+<button class="whitespace-nowrap px-3 py-1.5 bg-surface-container border border-outline-variant/30 rounded-lg font-body-sm text-body-sm text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit_document">edit_document</span> Draft Email
+                    </button>
+<button class="whitespace-nowrap px-3 py-1.5 bg-surface-container border border-outline-variant/30 rounded-lg font-body-sm text-body-sm text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="bar_chart">bar_chart</span> Attendance Trends
+                    </button>
+</div>
+<!-- Input Box -->
+<div class="relative flex items-end gap-2 bg-surface border border-outline-variant/50 rounded-2xl p-2 shadow-sm focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container/20 rounded-full transition-colors flex-shrink-0" title="Attach File">
+<span class="material-symbols-outlined" data-icon="attach_file">attach_file</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container/20 rounded-full transition-colors flex-shrink-0" title="Scan Document (OCR)">
+<span class="material-symbols-outlined" data-icon="document_scanner">document_scanner</span>
+</button>
+<textarea class="w-full bg-transparent border-none focus:ring-0 resize-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/50 max-h-32 py-2" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" placeholder="Ask Taleem AI to analyze data, draft emails, or summarize reports..." rows="1"></textarea>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-full transition-colors flex-shrink-0 mr-1" title="Voice Input">
+<span class="material-symbols-outlined" data-icon="mic">mic</span>
+</button>
+<button class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center hover:opacity-90 transition-opacity shadow-[0_5px_15px_-5px_rgba(70,72,212,0.4)] flex-shrink-0" title="Send">
+<span class="material-symbols-outlined text-[20px]" data-icon="send">send</span>
+</button>
+</div>
+<div class="text-center mt-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant/50">Taleem AI can make mistakes. Consider verifying important information.</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface-glass backdrop-blur-lg border-t border-white/20 shadow-lg rounded-t-xl h-[72px]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-300 ease-in-out font-label-caps text-label-caps w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-icon="dashboard">dashboard</span>
+<span class="text-[10px]">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-300 ease-in-out font-label-caps text-label-caps w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-icon="group">group</span>
+<span class="text-[10px]">Students</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-all duration-300 ease-in-out font-label-caps text-label-caps shadow-sm" href="#">
+<span class="material-symbols-outlined fill mb-1 text-[24px]" data-icon="smart_toy">smart_toy</span>
+<span class="text-[10px]">AI</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-300 ease-in-out font-label-caps text-label-caps w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-icon="fact_check">fact_check</span>
+<span class="text-[10px]">Attnd.</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-300 ease-in-out font-label-caps text-label-caps w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" data-icon="more_horiz">more_horiz</span>
+<span class="text-[10px]">More</span>
+</a>
+</nav>
+<script>
+        // Simple script to auto-scroll chat to bottom
+        window.onload = function() {
+            var chatContainer = document.getElementById('chat-container');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+    </script>
+</body></html>

@@ -1,0 +1,30 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "taleem-tuition-9204",
+          "appId": "1:705619266510:android:c3d3f894088dc536e2799f",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "taleem-tuition-9204",
+          "configurations": {
+            "android": "1:705619266510:android:c3d3f894088dc536e2799f",
+            "ios": "1:705619266510:ios:532a3655a571cce8e2799f",
+            "web": "1:705619266510:web:4993b529b301e751e2799f"
+          }
+        }
+      }
+    }
+  }
+}

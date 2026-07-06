@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "705619266510",
+    "project_id": "taleem-tuition-9204",
+    "storage_bucket": "taleem-tuition-9204.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705619266510:android:c3d3f894088dc536e2799f",
+        "android_client_info": {
+          "package_name": "com.taleem.taleem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9TiYb_3YCWNIsWbtc26Fw7xm6NhdiKIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

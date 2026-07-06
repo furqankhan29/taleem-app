@@ -1,0 +1,59 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper: check auth + role
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isAuthenticated() && firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) && 
+        firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Profile images: user can upload own, admin can manage all
+    match /profile_images/{userId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (isAdmin() || isOwner(userId));
+    }
+
+    // Student photos: teachers and admin can manage
+    match /student_photos/{studentId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || firestore.exists(/databases/(default)/documents/batches/{batch}) && 
+        firestore.get(/databases/(default)/documents/batches/{batch}).data.teacherId == request.auth.uid;
+      allow delete: if isAdmin();
+    }
+
+    // Teacher photos: admin or the teacher
+    match /teacher_photos/{teacherId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || isOwner(teacherId);
+    }
+
+    // Homework attachments: admin and teachers can write
+    match /homework_attachments/{batchId}/{homeworkId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || isAuthenticated();
+    }
+
+    // Fee receipts: admin only write, authenticated read
+    match /fee_receipts/{feeId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Report exports: admin only
+    match /report_exports/{reportId}/{fileName} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // General catch-all: deny by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
